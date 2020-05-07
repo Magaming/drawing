@@ -4,11 +4,15 @@ const Canvas = () => {
 
   const canvasRef = useRef(null);
   const [drawing,setDrawing] = useState<boolean>(false);
-  const rect = canvasRef.current.getBoundingClientRect();
 
   const getContext = (): CanvasRenderingContext2D => {
     const canvas: any = canvasRef.current;
     return canvas.getContext('2d');
+  }
+
+  const getRect = () => {
+    const canvas: any = canvasRef.current;
+    return canvas.getBoundingClientRect();
   }
 
   const initCanvas = () => {
@@ -43,9 +47,9 @@ const Canvas = () => {
       ref={canvasRef}
       width="500px"
       height="500px"
-      onTouchStart={e => startDrawing(e.changedTouches[0].pageX - rect.left, e.changedTouches[0].pageY - rect.top)}
+      onTouchStart={e => startDrawing(e.changedTouches[0].pageX - getRect().left, e.changedTouches[0].pageY - getRect().top)}
       onTouchEnd={() => setDrawing(false)}
-      onTouchMove={e => draw(e.changedTouches[0].pageX - rect.left, e.changedTouches[0].pageY - rect.top)}
+      onTouchMove={e => draw(e.changedTouches[0].pageX - getRect().left, e.changedTouches[0].pageY - getRect().top)}
       onMouseDown={e => startDrawing(e.nativeEvent.offsetX, e.nativeEvent.offsetY)}
       onMouseUp={() => setDrawing(false)}
       onMouseLeave={() => setDrawing(false)}
