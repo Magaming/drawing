@@ -1,5 +1,5 @@
 import {useRef, useEffect, useState} from "react";
-import styles from './div.module.css'
+import styles from './Canvas.module.css'
 
 const Canvas = () => {
 
@@ -43,12 +43,6 @@ const Canvas = () => {
 
   return (
     <div className={styles.div}>
-      <style jsx>{`
-        div {
-          touch-action: 'none';
-          user-select: 'none';
-        }
-      `}</style>
       <h1>Canvas</h1>
       <canvas
       ref={canvasRef}
