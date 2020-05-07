@@ -1,4 +1,5 @@
 import {useRef, useEffect, useState} from "react";
+import styles from './div.module.css'
 
 const Canvas = () => {
 
@@ -41,7 +42,7 @@ const Canvas = () => {
   },[])
 
   return (
-    <div style={{ touchAction: 'none', userSelect: 'none' }}>
+    <div className={styles.div}>
       <h1>Canvas</h1>
       <canvas
       ref={canvasRef}
