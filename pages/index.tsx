@@ -36,7 +36,7 @@ const Canvas = () => {
   },[])
 
   return (
-    <>
+    <div style={{ touchAction: 'none' }}>
       <h1>Canvas</h1>
       <canvas
       ref={canvasRef}
@@ -50,7 +50,7 @@ const Canvas = () => {
       onMouseLeave={() => setDrawing(false)}
       onMouseMove={e => draw(e.nativeEvent.offsetX, e.nativeEvent.offsetY)}
     />
-  </>
+  </div>
   )
 };
 
