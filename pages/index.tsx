@@ -14,7 +14,6 @@ const Canvas = () => {
     const ctx = getContext();
     ctx.fillStyle = "#A0A0A0A0"; //筆に白い絵の具をつけて
     ctx.fillRect(0, 0, 600, 600); //四角を描く
-    ctx.canvas.
   }
 
   const startDrawing = (x:number, y:number) => {
