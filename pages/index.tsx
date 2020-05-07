@@ -41,7 +41,7 @@ const Canvas = () => {
   },[])
 
   return (
-    <div style={{ touchAction: 'none' }}>
+    <div style={{ touchAction: 'none', userSelect: 'none' }}>
       <h1>Canvas</h1>
       <canvas
       ref={canvasRef}
