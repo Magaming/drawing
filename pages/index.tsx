@@ -16,38 +16,17 @@ const Canvas = () => {
     ctx.fillRect(0, 0, 600, 600); //四角を描く
   }
 
-  const startTouchDrawing = (e:React.TouchEvent<HTMLCanvasElement>) => {
-    setDrawing(true);
-    const ctx = getContext();
-    const rect = this.getBoundingClientRect()
-    const x = e.changedTouches[0].clientX - (rect.left + window.pageXOffset);
-    const y = e.changedTouches[0].clientY - (rect.top + window.pageYOffset);
-    ctx.moveTo(x, y);
-  }
-
   const startDrawing = (x:number, y:number) => {
     setDrawing(true);
     const ctx = getContext();
     ctx.moveTo(x, y);
   }
 
-  const mouseDraw = (x:number, y:number) => {
+  const draw = (x:number, y:number) => {
     if (!drawing) {
       return;
     }
     const ctx = getContext();
-    ctx.lineTo(x, y);
-    ctx.stroke();
-  }
-
-  const touchDraw = (e:React.TouchEvent<HTMLCanvasElement>) => {
-    if (!drawing) {
-      return;
-    }
-    const ctx = getContext();
-    const rect = this.getBoundingClientRect()
-    const x = e.changedTouches[0].clientX - (rect.left + window.pageXOffset);
-    const y = e.changedTouches[0].clientY - (rect.top + window.pageYOffset);
     ctx.lineTo(x, y);
     ctx.stroke();
   }
@@ -63,13 +42,13 @@ const Canvas = () => {
       ref={canvasRef}
       width="500px"
       height="500px"
-      onTouchStart={e => startTouchDrawing(e)}
+      onTouchStart={e => startDrawing(e.changedTouches[0].clientX, e.changedTouches[0].clientY)}
       onTouchEnd={() => setDrawing(false)}
-      onTouchMove={e => touchDraw(e)}
+      onTouchMove={e => draw(e.changedTouches[0].clientX, e.changedTouches[0].clientY)}
       onMouseDown={e => startDrawing(e.nativeEvent.offsetX, e.nativeEvent.offsetY)}
       onMouseUp={() => setDrawing(false)}
       onMouseLeave={() => setDrawing(false)}
-      onMouseMove={e => mouseDraw(e.nativeEvent.offsetX, e.nativeEvent.offsetY)}
+      onMouseMove={e => draw(e.nativeEvent.offsetX, e.nativeEvent.offsetY)}
     />
   </div>
   )
