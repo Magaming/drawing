@@ -43,6 +43,12 @@ const Canvas = () => {
 
   return (
     <div className={styles.div}>
+      <style jsx>{`
+        div {
+          touch-action: 'none';
+          user-select: 'none';
+        }
+      `}</style>
       <h1>Canvas</h1>
       <canvas
       ref={canvasRef}
