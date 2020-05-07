@@ -31,11 +31,23 @@ const Canvas = () => {
     ctx.moveTo(x, y);
   }
 
-  const draw = (x:number, y:number) => {
+  const mouseDraw = (x:number, y:number) => {
     if (!drawing) {
       return;
     }
     const ctx = getContext();
+    ctx.lineTo(x, y);
+    ctx.stroke();
+  }
+
+  const touchDraw = (e:React.TouchEvent<HTMLCanvasElement>) => {
+    if (!drawing) {
+      return;
+    }
+    const ctx = getContext();
+    const rect = this.getBoundingClientRect()
+    const x = e.changedTouches[0].clientX - (rect.left + window.pageXOffset);
+    const y = e.changedTouches[0].clientY - (rect.top + window.pageYOffset);
     ctx.lineTo(x, y);
     ctx.stroke();
   }
@@ -53,11 +65,11 @@ const Canvas = () => {
       height="500px"
       onTouchStart={e => startTouchDrawing(e)}
       onTouchEnd={() => setDrawing(false)}
-      onTouchMove={e => draw(e.changedTouches[0].clientX, e.changedTouches[0].clientY)}
+      onTouchMove={e => touchDraw(e)}
       onMouseDown={e => startDrawing(e.nativeEvent.offsetX, e.nativeEvent.offsetY)}
       onMouseUp={() => setDrawing(false)}
       onMouseLeave={() => setDrawing(false)}
-      onMouseMove={e => draw(e.nativeEvent.offsetX, e.nativeEvent.offsetY)}
+      onMouseMove={e => mouseDraw(e.nativeEvent.offsetX, e.nativeEvent.offsetY)}
     />
   </div>
   )
