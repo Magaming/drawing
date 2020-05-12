@@ -5,6 +5,7 @@ const Canvas = () => {
 
   const canvasRef = useRef(null);
   const [drawing,setDrawing] = useState<boolean>(false);
+  const [imageData, setImageData] = useState<ImageData[]>([]);
 
   const getContext = (): CanvasRenderingContext2D => {
     const canvas: any = canvasRef.current;
@@ -18,13 +19,17 @@ const Canvas = () => {
 
   const initCanvas = () => {
     const ctx = getContext();
-    ctx.fillStyle = "#A0A0A0A0"; //筆に白い絵の具をつけて
-    ctx.fillRect(0, 0, 600, 600); //四角を描く
+    ctx.clearRect(0, 0, 600, 600)
+    ctx.beginPath();
+    ctx.fillStyle = "#A0A0A0A0"; 
+    ctx.fillRect(0, 0, 600, 600)
   }
 
   const startDrawing = (x:number, y:number) => {
     setDrawing(true);
     const ctx = getContext();
+    const image = ctx.getImageData(0, 0, 600, 600);
+    setImageData(imageData.concat(image))
     ctx.moveTo(x, y);
   }
 
@@ -35,6 +40,21 @@ const Canvas = () => {
     const ctx = getContext();
     ctx.lineTo(x, y);
     ctx.stroke();
+  }
+
+  const stopDraw = () => {
+    setDrawing(false)
+  }
+
+  const undo = () => {
+    const ctx = getContext();
+    const prevImageData = imageData[imageData.length - 1]
+    if(!prevImageData){
+      return;
+    }
+    ctx.putImageData(prevImageData, 0, 0)
+    setImageData(imageData.slice(0, imageData.length - 1))
+    ctx.beginPath();
   }
 
   useEffect(() => {
@@ -49,13 +69,16 @@ const Canvas = () => {
       width="500px"
       height="500px"
       onTouchStart={e => startDrawing(e.changedTouches[0].pageX - getRect().left, e.changedTouches[0].pageY - getRect().top)}
-      onTouchEnd={() => setDrawing(false)}
+      onTouchEnd={stopDraw}
       onTouchMove={e => draw(e.changedTouches[0].pageX - getRect().left, e.changedTouches[0].pageY - getRect().top)}
       onMouseDown={e => startDrawing(e.nativeEvent.offsetX, e.nativeEvent.offsetY)}
-      onMouseUp={() => setDrawing(false)}
-      onMouseLeave={() => setDrawing(false)}
+      onMouseUp={stopDraw}
+      onMouseLeave={stopDraw}
       onMouseMove={e => draw(e.nativeEvent.offsetX, e.nativeEvent.offsetY)}
     />
+    <button onClick={undo}>Undo</button>
+    {/* <button>Redo</button> */}
+    <button onClick={initCanvas}>Clear</button>
   </div>
   )
 };
